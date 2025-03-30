@@ -1,20 +1,19 @@
-
 import psycopg2
 import customtkinter as ctk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 
 from tables import create_tables
 from db_manager import DatabaseManager
 
-import customtkinter as ctk
-from tkinter import messagebox
+ctk.set_appearance_mode("dark")  # Set to dark theme
+ctk.set_default_color_theme("dark-blue")  # Use the dark-blue theme
+
 
 class StudentManagementSystem(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Student Management System")
         self.geometry("1200x800")
-        self.configure(fg_color="white")
 
         self.db_manager = DatabaseManager()
         self.frames = {}
@@ -34,11 +33,12 @@ class StudentManagementSystem(ctk.CTk):
         }
 
         for text, frame_key in self.nav_buttons.items():
-            ctk.CTkButton(
+            button = ctk.CTkButton(
                 self.nav_frame,
                 text=text,
-                command=lambda key=frame_key: self.show_frame(key)
-            ).pack(pady=5, padx=10, fill="x")
+                command=lambda key=frame_key: self.show_frame(key),
+            )
+            button.pack(pady=5, padx=10, fill="x")
 
     def setup_frames(self):
         for name in self.nav_buttons.values():
@@ -55,83 +55,80 @@ class StudentManagementSystem(ctk.CTk):
 
     def create_student_form(self):
         frame = self.frames["students_frame"]
-        ctk.CTkLabel(frame, text="Manage Students", font=("Arial", 20)).pack(pady=10)
+        ctk.CTkLabel(frame, text="Manage Students", font=("Arial", 24)).pack(pady=20)
+
+        form_frame = ctk.CTkFrame(frame)
+        form_frame.pack(pady=30, anchor="center")
 
         self.student_entries = {
-            "First Name": ctk.CTkEntry(frame, placeholder_text="First Name"),
-            "Last Name": ctk.CTkEntry(frame, placeholder_text="Last Name"),
-            "DOB": ctk.CTkEntry(frame, placeholder_text="YYYY-MM-DD"),
-            "Gender": ctk.CTkEntry(frame, placeholder_text="Male/Female/Other"),
-            "Email": ctk.CTkEntry(frame, placeholder_text="Email"),
-            "Phone": ctk.CTkEntry(frame, placeholder_text="Phone"),
-            "Address": ctk.CTkEntry(frame, placeholder_text="Address"),
-            "Admission Date": ctk.CTkEntry(frame, placeholder_text="YYYY-MM-DD"),
-            "Department ID": ctk.CTkEntry(frame, placeholder_text="Department ID")
+            "First Name": ctk.CTkEntry(form_frame, placeholder_text="First Name", justify="center"),
+            "Last Name": ctk.CTkEntry(form_frame, placeholder_text="Last Name", justify="center"),
+            "DOB": ctk.CTkEntry(form_frame, placeholder_text="YYYY-MM-DD", justify="center"),
+            "Gender": ctk.CTkEntry(form_frame, placeholder_text="Male/Female/Other", justify="center"),
+            "Email": ctk.CTkEntry(form_frame, placeholder_text="Email", justify="center"),
+            "Phone": ctk.CTkEntry(form_frame, placeholder_text="Phone", justify="center"),
+            "Address": ctk.CTkEntry(form_frame, placeholder_text="Address", justify="center"),
+            "Admission Date": ctk.CTkEntry(form_frame, placeholder_text="YYYY-MM-DD", justify="center"),
+            "Department ID": ctk.CTkEntry(form_frame, placeholder_text="Department ID", justify="center")
         }
 
-        for entry in self.student_entries.values():
-            entry.pack(pady=5)
+        for i, (label, entry) in enumerate(self.student_entries.items()):
+            entry.grid(row=i, column=0, pady=5, padx=20, sticky="ew")
 
-        ctk.CTkButton(frame, text="Add Student", command=self.add_student).pack(pady=5)
-        ctk.CTkButton(frame, text="Display Students", command=lambda: self.display_records("Students")).pack(pady=5)
-
-        self.student_display = ctk.CTkTextbox(frame, height=200)
-        self.student_display.pack(pady=5, fill="both", expand=True)
+        ctk.CTkButton(form_frame, text="Add Student", command=self.add_student).grid(row=len(self.student_entries), column=0, pady=10)
+        ctk.CTkButton(form_frame, text="Display Students", command=lambda: self.display_records("Students")).grid(row=len(self.student_entries) + 1, column=0, pady=5)
 
     def create_course_form(self):
         frame = self.frames["courses_frame"]
-        ctk.CTkLabel(frame, text="Manage Courses", font=("Arial", 20)).pack(pady=10)
+        ctk.CTkLabel(frame, text="Manage Courses", font=("Arial", 24)).pack(pady=20)
+
+        form_frame = ctk.CTkFrame(frame)
+        form_frame.pack(pady=30, anchor="center")
 
         self.course_entries = {
-            "Course Name": ctk.CTkEntry(frame, placeholder_text="Course Name"),
-            "Course Code": ctk.CTkEntry(frame, placeholder_text="Course Code"),
-            "Credits": ctk.CTkEntry(frame, placeholder_text="Credits"),
-            "Department ID": ctk.CTkEntry(frame, placeholder_text="Department ID"),
-            "Teacher ID": ctk.CTkEntry(frame, placeholder_text="Teacher ID")
+            "Course Name": ctk.CTkEntry(form_frame, placeholder_text="Course Name", justify="center"),
+            "Course Code": ctk.CTkEntry(form_frame, placeholder_text="Course Code", justify="center"),
+            "Credits": ctk.CTkEntry(form_frame, placeholder_text="Credits", justify="center"),
+            "Department ID": ctk.CTkEntry(form_frame, placeholder_text="Department ID", justify="center"),
+            "Teacher ID": ctk.CTkEntry(form_frame, placeholder_text="Teacher ID", justify="center")
         }
 
-        for entry in self.course_entries.values():
-            entry.pack(pady=5)
+        for i, (label, entry) in enumerate(self.course_entries.items()):
+            entry.grid(row=i, column=0, pady=5, padx=20, sticky="ew")
 
-        ctk.CTkButton(frame, text="Add Course", command=self.add_course).pack(pady=5)
-        ctk.CTkButton(frame, text="Display Courses", command=lambda: self.display_records("Courses")).pack(pady=5)
-
-        self.course_display = ctk.CTkTextbox(frame, height=200)
-        self.course_display.pack(pady=5, fill="both", expand=True)
+        ctk.CTkButton(form_frame, text="Add Course", command=self.add_course).grid(row=len(self.course_entries), column=0, pady=10)
+        ctk.CTkButton(form_frame, text="Display Courses", command=lambda: self.display_records("Courses")).grid(row=len(self.course_entries) + 1, column=0, pady=5)
 
     def create_department_form(self):
         frame = self.frames["departments_frame"]
-        ctk.CTkLabel(frame, text="Manage Departments", font=("Arial", 20)).pack(pady=10)
+        ctk.CTkLabel(frame, text="Manage Departments", font=("Arial", 24)).pack(pady=20)
+
+        form_frame = ctk.CTkFrame(frame)
+        form_frame.pack(pady=30, anchor="center")
 
         self.department_entries = {
-            "Department Name": ctk.CTkEntry(frame, placeholder_text="Department Name"),
-            "Head of Department ID": ctk.CTkEntry(frame, placeholder_text="Head of Department ID")
+            "Department Name": ctk.CTkEntry(form_frame, placeholder_text="Department Name", justify="center"),
+            "Head of Department ID": ctk.CTkEntry(form_frame, placeholder_text="Head of Department ID", justify="center")
         }
 
-        for entry in self.department_entries.values():
-            entry.pack(pady=5)
+        for i, (label, entry) in enumerate(self.department_entries.items()):
+            entry.grid(row=i, column=0, pady=5, padx=20, sticky="ew")
 
-        ctk.CTkButton(frame, text="Add Department", command=self.add_department).pack(pady=5)
-        ctk.CTkButton(frame, text="Display Departments", command=lambda: self.display_records("Departments")).pack(pady=5)
-
-        self.department_display = ctk.CTkTextbox(frame, height=200)
-        self.department_display.pack(pady=5, fill="both", expand=True)
+        ctk.CTkButton(form_frame, text="Add Department", command=self.add_department).grid(row=len(self.department_entries), column=0, pady=10)
+        ctk.CTkButton(form_frame, text="Display Departments", command=lambda: self.display_records("Departments")).grid(row=len(self.department_entries) + 1, column=0, pady=5)
 
     def add_student(self):
         values = [entry.get() for entry in self.student_entries.values()]
         query = (
-            "INSERT INTO Students (first_name, last_name, dob, gender, email, phone_number, "
-            "address, admission_date, department_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            "INSERT INTO Students (first_name, last_name, dob, gender, email, phone_number, address, admission_date, department_id) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         )
         self.db_manager.execute_query(query, values)
         messagebox.showinfo("Success", "Student added successfully!")
 
     def add_course(self):
         values = [entry.get() for entry in self.course_entries.values()]
-        query = (
-            "INSERT INTO Courses (course_name, course_code, credits, department_id, teacher_id) "
-            "VALUES (%s, %s, %s, %s, %s)"
-        )
+        query = "INSERT INTO Courses (course_name, course_code, credits, department_id, teacher_id) VALUES (%s, %s, %s, %s, %s)"
         self.db_manager.execute_query(query, values)
         messagebox.showinfo("Success", "Course added successfully!")
 
@@ -141,28 +138,12 @@ class StudentManagementSystem(ctk.CTk):
         self.db_manager.execute_query(query, values)
         messagebox.showinfo("Success", "Department added successfully!")
 
-    def display_records(self, table_name):
-        query = f"SELECT * FROM {table_name}"
-        records = self.db_manager.fetch_records(query)
-
-        display_box = {
-            "Students": self.student_display,
-            "Courses": self.course_display,
-            "Departments": self.department_display
-        }.get(table_name, None)
-
-        if display_box:
-            display_box.delete("1.0", "end")
-            if records:
-                for record in records:
-                    display_box.insert("end", f"{record}\n")
-            else:
-                display_box.insert("end", "No records found.\n")
 
 def main():
     create_tables()
     app = StudentManagementSystem()
     app.mainloop()
+
 
 if __name__ == "__main__":
     main()

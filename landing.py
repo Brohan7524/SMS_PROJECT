@@ -69,7 +69,7 @@ class LoginPage(ctk.CTk):
                 messagebox.showinfo("Success", f"Welcome, {role}!")
                 self.destroy()
                 # Import and launch the main application
-                from main_app import main
+                from main import main
                 main()
             else:
                 messagebox.showerror("Error", "Invalid username or password")
