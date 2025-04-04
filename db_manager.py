@@ -33,3 +33,11 @@ class DatabaseManager:
         except Exception as e:
             messagebox.showerror("Database Error", str(e))
             return []
+        
+    def count_records(self, table):
+        try:
+            self.cursor.execute(f"SELECT COUNT(*) FROM {table}")
+            return self.cursor.fetchone()[0]
+        except Exception as e:
+            print(f"Error counting {table}: {e}")
+            return 0

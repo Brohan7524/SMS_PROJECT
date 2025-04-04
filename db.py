@@ -7,7 +7,7 @@ def connect_db():
             host=os.getenv("DB_HOST", "localhost"),
             database=os.getenv("DB_NAME", "student_management_system"),
             user=os.getenv("DB_USER", "postgres"),
-            password=os.getenv("DB_PASSWORD", "thoushallpass")
+            password=os.getenv("DB_PASSWORD", "admin@1234")
               # Replace with env variable in production
         )
         print("connection successful")
