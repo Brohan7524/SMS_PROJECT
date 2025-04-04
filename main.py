@@ -8,7 +8,7 @@ from db_manager import DatabaseManager
 ctk.set_appearance_mode("dark")  # Set to dark theme
 ctk.set_default_color_theme("dark-blue")  # Use the dark-blue theme
 
-
+#check for main.py updates
 class StudentManagementSystem(ctk.CTk):
     def __init__(self):
         super().__init__()
